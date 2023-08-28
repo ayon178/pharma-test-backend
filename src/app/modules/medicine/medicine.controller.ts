@@ -42,8 +42,22 @@ const getMedicineById = catchAsync(async (req: Request, res: Response) => {
   sendSuccessResponse(res, responseData)
 })
 
+const updateMedicine = catchAsync(async (req: Request, res: Response) => {
+  const { quantity } = req.body
+  const medicine = await MedicineService.updateMedicine(
+    req.params.id,
+    Number(quantity)
+  )
+  const responseData = {
+    data: medicine,
+    message: 'Order placed successfully',
+  }
+  sendSuccessResponse(res, responseData)
+})
+
 export const MedicineController = {
   addMedicine,
   getAllMedicine,
   getMedicineById,
+  updateMedicine,
 }

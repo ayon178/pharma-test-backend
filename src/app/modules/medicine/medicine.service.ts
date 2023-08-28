@@ -85,8 +85,26 @@ const getMedicineById = async (id: string): Promise<IMedicine> => {
   return medicine
 }
 
+const updateMedicine = async (
+  id: string,
+  quantity: number
+): Promise<IMedicine> => {
+  const isExist = await MedicineModel.findById(id)
+  if (!isExist) throw new ApiError(httpStatus.NOT_FOUND, 'Medicine not found')
+  const medicine = await MedicineModel.findByIdAndUpdate(
+    id,
+    { $set: { quantity } },
+    { new: true }
+  )
+  console.log(medicine, '==============')
+  if (!medicine)
+    throw new ApiError(httpStatus.NOT_FOUND, 'Something went wrong')
+  return medicine
+}
+
 export const MedicineService = {
   addMedicine,
   getAllMedicine,
   getMedicineById,
+  updateMedicine,
 }
